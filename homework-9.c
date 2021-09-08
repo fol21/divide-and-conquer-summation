@@ -68,7 +68,7 @@ void* divide_and_conquer_sum_thread(void* arg)
     }
     else if(args->length == 1)
     {
-        *data = (args->parts[0] + args->parts[1]);
+        *data = args->parts[0];
          return  data;
     }
     else

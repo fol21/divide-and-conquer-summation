@@ -1,6 +1,6 @@
 ## Exercício 9
 
-A mais simples forma de fazer uma soma de um conjunto de partes inteiras se dá por um loop sequencial, um *for loop* é capaz de realizar esta tareda de forma totalmente sequencial, sem se preocupar com sincronismo.
+A mais simples forma de fazer uma soma de um conjunto de partes inteiras se dá por um loop sequencial, um *for loop* é capaz de realizar esta tarefa de forma totalmente sequencial, sem se preocupar com sincronismo.
 
 ````C
 int loop_sum(int length, int parts*)
@@ -57,7 +57,7 @@ void* divide_and_conquer_sum_thread(void* arg)
     }
     else if(args->length == 1)
     {
-        *data = (args->parts[0] + args->parts[1]);
+        *data = args->parts[0];
          return  data;
     }
     else
@@ -88,7 +88,7 @@ void* divide_and_conquer_sum_thread(void* arg)
 }
 ````
 
-Com essas três abordagens é possível construir um programa de execução realizando as três formas de soma de partes.
+Com essas três abordagens, é possível construir um programa de execução realizando as três formas de soma de partes.
 ````C
 int main(int argc, char *argv[])
 {
@@ -126,7 +126,7 @@ Paralelo Recursivo 15
 
 ## Exercício 17
 
-Utilizando uma lógica parecida com a do exercício 9. Pode-se utilizar recursão para auxiliar o paralelismo e dividir o trabalho em threads. Foi utilizado o conceito de semáforos para acessar de forma segura e garantir sincronismo entre o manager central e as threads. Abaixo está descrito um modelo utilizando sintaxe C para um pseudo-código representando a paralelização do branch-and-bound.
+Utilizando uma lógica parecida com a do exercício 9, a recursão pode auxiliar o paralelismo e dividir o trabalho em threads. Foi implementado o conceito de semáforos para acessar de forma segura e garantir sincronismo entre o manager central e as threads. Abaixo está descrito um modelo utilizando sintaxe C para um pseudo-código representando a paralelização do branch-and-bound.
 
 ````C
 void* branch_and_bound_thread(void* arg)
@@ -153,7 +153,7 @@ void* branch_and_bound_thread(void* arg)
         sem_post(&mutex);
         
         pthread_t thd;
-        pthread_create(&left_thd, NULL, divide_and_conquer_sum_thread, args);
+        pthread_create(&thd, NULL, divide_and_conquer_sum_thread, args);
 
         pthread_join(thd, NULL);
     }
