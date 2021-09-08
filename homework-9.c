@@ -22,6 +22,13 @@ int* copy(int* arr, int start, int end)
     
 }
 
+int loop_sum(int length, int* parts)
+{
+    int sum = 0;
+    for (int i = 0; i < length; i++){ sum += parts[i]; }
+    return sum;
+}
+
 int divide_and_conquer_sum(int length, int* parts)
 {
     if(length == 2)
@@ -53,12 +60,6 @@ void* divide_and_conquer_sum_thread(void* arg)
 {
     divide_and_conquer_args* args = (divide_and_conquer_args*) arg;
     int* data = (int*) malloc(sizeof(int));
-    // //wait
-    // sem_wait(&mutex);
-    //  *data = args[0] + args[1];
-    // //signal
-    // sem_post(&mutex);   
-    // return data;
 
     if(args->length == 2)
     {
@@ -100,25 +101,25 @@ void* divide_and_conquer_sum_thread(void* arg)
   
 int main(int argc, char *argv[])
 {
-    sem_init(&mutex, 0, 1);
-
-    // pthread_t prod_thds;
-    // int arg[2]  = {1,2};
-    // int* result;
-    // pthread_create(&prod_thds, NULL, divide_and_conquer_sum_thread, arg);
-    // int arr[5] = {10,-10,10,-10,2};
     int arr[5] = {1,2,3,4,5};
-    int sum = 0;
-    sum = divide_and_conquer_sum( NELEMS(arr), arr);
-    printf("%d\n", sum);
-    // pthread_join(prod_thds, &result);
 
+    // Sequencial
+    int sum = 0;
+    sum = loop_sum( NELEMS(arr), arr);
+    printf("Sequencial %d\n", sum);
+
+    // Sequencial Recursivo
+    sum = 0;
+    sum = divide_and_conquer_sum( NELEMS(arr), arr);
+    printf("Sequencial Recursivo %d\n", sum);
+
+    // Paralelo Recursivo
     pthread_t divide_and_conquer_thd;
     int* result;
     divide_and_conquer_args args = {NELEMS(arr), arr};
     pthread_create(&divide_and_conquer_thd, NULL, divide_and_conquer_sum_thread, &args);
 
     pthread_join(divide_and_conquer_thd, &result);
-    printf("%d\n", *result);
+    printf("Paralelo Recursivo %d\n", *result);
     return 0;
 }
