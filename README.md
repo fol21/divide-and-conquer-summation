@@ -1,0 +1,2 @@
+# divide-and-conquer-summation
+In developing an efficient parallel summation algorithm, we have distribute N-1 communication and computation operations required to perform the summation and have modified the order in which these operations are performed so that they can proceed concurrently. The result is a regular communication structure in which each task communicates with a small set of neighbors.
